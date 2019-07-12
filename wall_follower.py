@@ -16,8 +16,8 @@ class WallFollower:
     SIDE = rospy.get_param("wall_follower/side")
     #VELOCITY = #rospy.get_param("wall_follower/velocity")
     DESIRED_DISTANCE = 1 #rospy.get_param("wall_follower/desired_distance")
-    behindforce=1
-    fpdconst=1
+    behindforce=0
+    fpdconst=.5
     ktheta=1
     #maxangle=rospy.get_param("wall_follower/max_steering_angle")
     def __init__(self):
@@ -64,17 +64,17 @@ class WallFollower:
         points=[]
         for item in self.data.ranges:
             #inverse squer law
-            x,y=self.pol2cart(self.fpdconst/(float(item)**2),(np.pi/4-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
+            x,y=self.pol2cart(-1*self.fpdconst/(float(item)**4),(np.pi/4-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
             #type(points)-
             points.append([x,y])
             
         #print("points array is {0}".format(isdr))
         total=np.sum(points,axis=0)
-        print(total)
+        #print(total)
         total[1]+=self.behindforce*(len(self.data.ranges)/3)*1/self.DESIRED_DISTANCE**2
         tvel, trad =self.cart2pol(total[0],total[1])
-        #print("points array is {0}. total sum is (r,theta){1},{2}".format(points,tvel,trad))
-        self.VELOCITY=tvel
+        print("total array is {0}. total sum is (r,theta){1},{2}".format(total,tvel,trad))
+        self.VELOCITY=1#tvel
         angle=self.ktheta*trad
         print(tvel)
         return(angle)
