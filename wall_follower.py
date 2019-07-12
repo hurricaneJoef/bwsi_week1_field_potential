@@ -64,7 +64,7 @@ class WallFollower:
         points=[]
         for item in self.data.ranges:
             #inverse squer law
-            x,y=self.pol2cart(self.fpdconst/(float(item)**2),(len(self.data.ranges)/2-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
+            x,y=self.pol2cart(self.fpdconst/(float(item)**2),(np.pi/4-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
             #type(points)-
             points.append([x,y])
             
