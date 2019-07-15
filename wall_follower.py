@@ -37,7 +37,7 @@ class WallFollower:
     #calls function that controls driving
         self.autorun(self)
     def autorun():
-        self.feildpot()
+        self.fieldpot()
     def drive(self,speed, angle):
         """controls driving"""
 
