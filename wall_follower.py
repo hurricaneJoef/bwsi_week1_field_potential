@@ -35,7 +35,7 @@ class WallFollower:
         self.data = data
 
     #calls function that controls driving
-        self.autorun()
+        self.autorun(self)
     def autorun():
         self.feildpot()
     def drive(self,speed, angle):
