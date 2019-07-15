@@ -25,7 +25,7 @@ class WallFollower:
         # subscribers
      #   print(self.maxangle)
         self.data = None    
-        self.angle = 0
+        self.angle_set = 0
         self.cmd = AckermannDriveStamped()
         self.laser_sub = rospy.Subscriber(self.SCAN_TOPIC, LaserScan, self.scan, queue_size=1)
         self.drive_pub = rospy.Publisher(self.DRIVE_TOPIC, AckermannDriveStamped, queue_size=1)
@@ -37,15 +37,15 @@ class WallFollower:
     #calls function that controls driving
         self.drive()
     
-    def drive(self):
+    def drive(self,speed, angle):
         """controls driving"""
 
     #gets the angle required
-        self.angle = self.find_wall()
+        self.angle = angle
 
     #sets speed and driving angle
-        self.cmd.drive.speed = self.VELOCITY
-        self.cmd.drive.steering_angle = self.angle
+        self.cmd.drive.speed = speed
+        self.cmd.drive.steering_angle = self.angle_set
 
         #publishes the command
         self.drive_pub.publish(self.cmd)
@@ -105,7 +105,7 @@ class WallFollower:
     # if lidar data has not been received, do nothing
         if self.data == None:
             return 0
-
+        return self.fieldpot()
     ## TO DO: Find Alg for Wall Following ##
     
         """Lidar data is now stored in self.data, which can be accessed
@@ -115,10 +115,10 @@ class WallFollower:
         self.data.ranges[99] gives the rightmost lidar point
         .self.data.ranges[49] gives the forward lidar point
         """
-        tempAngle=self.fieldpot()
+        #tempAngle=
         
     #returns the output of your alg, the new angle to drive in
-        return tempAngle
+        #return tempAngle
 
 if __name__ == "__main__":
     rospy.init_node('wall_follower')
