@@ -74,10 +74,11 @@ class WallFollower:
         total[1]+=self.behindforce*(len(self.data.ranges)/3)*1/self.DESIRED_DISTANCE**2
         tvel, trad =self.cart2pol(total[0],total[1])
         print("total array is {0}. total sum is (r,theta){1},{2}".format(total,tvel,trad))
-        self.VELOCITY=1#tvel
+        self.VELOCITY=1 #tvel
         angle=self.ktheta*trad
         print(tvel)
-        return(angle)
+        self.drive(.5,angle)
+        return 0
         
         
         
