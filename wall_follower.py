@@ -36,6 +36,7 @@ class WallFollower:
 
     #calls function that controls driving
         self.autorun()
+
     def autorun(self):
         self.fieldpot()
     def drive(self,speed, angle):
@@ -46,17 +47,16 @@ class WallFollower:
 
     #sets speed and driving angle
         self.cmd.drive.speed = speed
-        self.cmd.drive.steering_angle = self.angle_set
-
+        self.cmd.drive.steering_angle = angle
         #publishes the command
         self.drive_pub.publish(self.cmd)
     def pol2cart(self,r, theta):
         x = r * np.cos(theta)
         y = r * np.sin(theta)
         return(x, y)
-    def cart2pol(self,x, y):
+    def cart2pol(self,x, y): #rads from y not x axis
         rho = np.sqrt(x**2 + y**2)
-        phi = np.arctan2(y, x)
+        phi = np.arctan2(x, y)
         return(rho, phi)
         
         
@@ -65,7 +65,7 @@ class WallFollower:
         points=[]
         for item in self.data.ranges:
             #inverse squer law
-            x,y=self.pol2cart(-1*self.fpdconst/(float(item)**4),(np.pi/4-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
+            x,y=self.pol2cart(-1*self.fpdconst/(float(item)**5),(np.pi/4-self.data.ranges.index(item))*1.5*np.pi/len(self.data.ranges))
             #type(points)-
             points.append([x,y])
             
